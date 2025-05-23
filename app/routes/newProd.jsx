@@ -1,27 +1,21 @@
 import React, {Children} from "react";
 import {Form} from "react-router";
 import {useNavigate} from "react-router";
-// import {connectDB} from "../server/db";
-// import {client} from "../server/db";
-import {getProducts} from "../models/products";
+import {createProducts} from "../models/products";
+
 import {
   validateText,
   validateAmount,
   validateImage,
 } from "../server/validation";
-import {client} from "../server/db";
 
 export async function action({request}) {
   let formData = await request.formData();
-  let name = formData.get("name")?.toString() || "";
-  let price = parseFloat(formData.get("price"));
-  let quantity = parseInt(formData.get("quantity"));
-  let image = formData.get("image")?.toString() || "";
+  let name = formData.get("name");
+  let price = Number(formData.get("price"));
+  let quantity = Number(formData.get("quantity"));
+  let image = formData.get("image");
 
-  let db = client.db("Products"); // Match your existing DB name
-  let collection = db.collection("Products"); // Match your existing collection name
-
-  // Validation (keep your existing code)
   let fieldErrors = {
     name: validateText(name),
     quantity: validateAmount(quantity),
@@ -33,18 +27,16 @@ export async function action({request}) {
     return {fieldErrors};
   }
 
-  try {
-    const productDoc = {
-      name,
-      price: parseFloat(price),
-      quantity: parseInt(quantity),
-      image,
-    };
+  let productObj = {
+    name,
+    price,
+    quantity,
+    image,
+  };
+  let result = await createProducts(productObj);
+  console.log({result});
 
-    await collection.insertOne(productDoc);
-  } finally {
-    await client.close();
-  }
+  return null;
 }
 
 export default function Newproduct({actionData}) {

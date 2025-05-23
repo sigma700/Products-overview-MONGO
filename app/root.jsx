@@ -31,7 +31,7 @@ export function Layout({children}) {
         <Meta />
         <Links />
       </head>
-      <body className="flex items-center justify-center h-screen">
+      <body className="flex items-center justify-center h-full">
         {children}
         <ScrollRestoration />
         <Scripts />
