@@ -4,4 +4,5 @@ export default [
   index("routes/home.jsx"),
   route("products", "routes/products.jsx"),
   route("newProduct", "routes/newProd.jsx"),
+  route("products/:id", "routes/product.jsx"),
 ];

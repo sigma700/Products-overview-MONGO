@@ -1,6 +1,7 @@
 import React from "react";
 import {getProducts} from "../models/products";
 import {Link} from "react-router";
+import {IndivProd} from "./product";
 
 export async function loader() {
   let result = await getProducts();
@@ -37,7 +38,14 @@ export default function Products({loaderData}) {
               />
               <p>{item.title}</p>
               <small>{item.quantity}</small>
-              <small>{item.price}</small>
+              <p>{item.price}</p>
+              <Link
+                className="bg-[#ccff02] p-[10px] w-[100px] text-black font-light mt-[20px] hover:bg-transparent hover:text-white border border-[#ccff02] hover:transition-all duration-[0.3s] hover:cursor-pointer active:bg-[#ccff02] active:text-black hover:rounded-[30px] active:rounded-[0px]"
+                to={`/products/${item._id}`}
+                rel="prefetch"
+              >
+                Details
+              </Link>
             </li>
           ))}
         </ul>

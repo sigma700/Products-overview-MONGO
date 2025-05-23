@@ -9,7 +9,15 @@ export async function getProducts() {
   return products;
 }
 
+export async function getProductById(id) {
+  let product = await collection.findOne({
+    _id: ObjectId.createFromHexString(id),
+  });
+  return product;
+}
+
 export async function createProducts(product) {
   let result = await collection.insertOne(product);
+
   return result;
 }
