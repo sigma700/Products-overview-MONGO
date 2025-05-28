@@ -16,9 +16,16 @@ export default function IndivProd({loaderData}) {
   return (
     <main className="p-[30px]">
       <div>
-        <h1 className="text-[30px] mb-[30px] text-[#ccff02]">
-          {loaderData.title}
-        </h1>
+        <nav className="flex justify-between items-center gap-[30px] mb-[30px]">
+          <h1 className="text-[30px] text-[#ccff02]">{loaderData.name}</h1>
+          <Link
+            to={`/products/${loaderData._id}/edit/`}
+            className="bg-[#e5e6e0] text-black p-[10px] font-extralight hover:bg-[#ccff02] hover:rounded-[20px] hover:transition-all hover:duration-[0.2s] duration-[0.2s]"
+          >
+            Edit product
+          </Link>
+        </nav>
+
         <img
           className="w-[300px] h-[300px] object-cover rounded-[10px]"
           src={loaderData.image}

@@ -1,4 +1,4 @@
-import {client, ObjectId} from "../server/db";
+import {client, ObjectId} from "../routes/server/db";
 
 const uri = process.env.MONGODB_CONNECTION_STRING;
 
@@ -19,5 +19,23 @@ export async function getProductById(id) {
 export async function createProducts(product) {
   let result = await collection.insertOne(product);
 
+  return result;
+}
+
+export async function updateProducts(id, title, price, quantity, image) {
+  //getting all the individual products
+  let result = await collection.updateOne(
+    {
+      _id: ObjectId.createFromHexString(id),
+    },
+    {
+      $set: {
+        title,
+        price,
+        quantity,
+        image,
+      },
+    }
+  );
   return result;
 }

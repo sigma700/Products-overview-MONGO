@@ -1,7 +1,7 @@
 import React from "react";
 import {getProducts} from "../models/products";
 import {Link} from "react-router";
-import {IndivProd} from "./product";
+// import {IndivProd} from "./product";
 
 export async function loader() {
   let result = await getProducts();
@@ -36,7 +36,7 @@ export default function Products({loaderData}) {
                 src={item.image}
                 alt=""
               />
-              <p>{item.title}</p>
+              <p>{item.name}</p>
               <small>{item.quantity}</small>
               <p>{item.price}</p>
               <Link

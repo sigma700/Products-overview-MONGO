@@ -1,16 +1,25 @@
-import React, {Children} from "react";
+import React from "react";
 import {Form, redirect} from "react-router";
+import {updateProducts, getProductById} from "../models/products";
 import {useNavigate} from "react-router";
-import {createProducts} from "../models/products";
-
 import {validateText, validateAmount, validateImage} from "./server/validation";
 
-export async function action({request}) {
+export async function loader({params}) {
+  console.log({params});
+  let id = params.id;
+  let product = await getProductById(id);
+  console.log({product});
+  return product;
+}
+
+//action function for handling form submission
+export async function action({request, params}) {
   let formData = await request.formData();
   let name = formData.get("name");
-  let price = parseFloat(formData.get("price"));
-  let quantity = parseFloat(formData.get("quantity"));
+  let price = formData.get("price");
+  let quantity = formData.get("quantity");
   let image = formData.get("image");
+  //   console.log({name, price, quantity, image});
 
   let fieldErrors = {
     name: validateText(name),
@@ -23,23 +32,16 @@ export async function action({request}) {
     return {fieldErrors};
   }
 
-  let productObj = {
-    name,
-    price,
-    quantity,
-    image,
-  };
-  let result = await createProducts(productObj);
-  let id = result.insertedId.toString();
-
+  let id = params.id;
+  let result = await updateProducts(id, name, price, image, quantity);
   console.log({result});
+
+  //   let id = result.insertedId.toString();
 
   return redirect(`/products/${id}`);
 }
-
-export default function Newproduct({actionData}) {
+export default function Edits({actionData}) {
   console.log({result: actionData});
-
   const navigate = useNavigate();
   return (
     <main>
@@ -53,7 +55,7 @@ export default function Newproduct({actionData}) {
           >
             Back
           </button>
-          <h1 className="text-[#e0fe08] text-[30px] mb-[20px]">New Product</h1>
+          <h1 className="text-[#e0fe08] text-[30px] mb-[20px]">Edit Product</h1>
         </div>
         <Form method="post">
           <FormSpacer>
@@ -131,7 +133,7 @@ export function Input({type, name, text, id, hasError}) {
         hasError ? "border-red-600" : "border-white"
       } bg-[#182641] p-[10px] font-light w-[700px] mt-[10px]`}
       type={type}
-      title={name}
+      name={name}
       id={id}
     >
       {text}
